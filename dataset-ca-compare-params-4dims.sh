@@ -1,14 +1,15 @@
 #!/bin/bash
 
 ## this script assumes all models have 4 resource types
+## total number of instances to be generated: 11664
 
 V_BIDS_N=1000
-V_BIDS_MODEL="models/model-uniform4* models/model-hotspots4* models/model-bitbrains*"
-V_BIDS_BINNING_TYPE='regular g2progression'
+V_BIDS_MODEL="models/model-uniform4* models/model-hotspots4_16* models/model-bitbrains*clustered*"
+V_BIDS_BINNING_TYPE='regular'
 V_BIDS_BINNING_COUNTS='16 8'
 V_BIDS_DOMAIN='[128,128,128,128]'
 V_ASKS_N=1000
-V_ASKS_MODEL="models/model-uniform4* models/model-hotspots4* models/model-bitbrains*"
+V_ASKS_MODEL="models/model-uniform4* models/model-hotspots4_16* models/model-bitbrains*clustered*"
 V_ASKS_BINNING_TYPE='regular'
 V_ASKS_BINNING_COUNTS='8'
 V_ASKS_DOMAIN='[128,128,128,128]'
