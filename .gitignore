@@ -2,6 +2,5 @@ env
 .vscode
 db
 models
-dataset-ca-compare*
-datset-malaise
-dataset-praise
+dataset-*
+job_uc1_*

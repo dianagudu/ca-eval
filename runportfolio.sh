@@ -1,21 +1,24 @@
 #!/bin/bash
 
 ## script arguments:
-## $1: mode to run portfolio in: heuristics, all (i.e. including CPLEX) and samples
-## $2: task queue (task = auction instances to run portfolio on)
-## $3: output file prefix
+## $1: path to executable portfolio (absolute path)
+## $2: mode to run portfolio in: heuristics, all (i.e. including CPLEX) and samples
+## $3: task queue (task = auction instances to run portfolio on) (absolute path)
+## $4: output file prefix (absolute path)
 
-if [[ $# -ne 3 ]]; then
-    echo 'Please provide 3 arguments:'
-    echo '  1. run mode (heuristic/all/samples)'
-    echo '  2. task queue (task = list of auction instances)'
-    echo '  3. output file'
+if [[ $# -ne 4 ]]; then
+    echo 'Please provide 4 arguments:'
+    echo '  1. path to executable portfolio (absolute path)'
+    echo '  2. run mode (heuristics/all/samples)'
+    echo '  3. task queue (task = list of auction instances) (absolute path)'
+    echo '  4. output file (absolute path)'
     exit
 fi
 
-MODE=$1
-TASK_QUEUE=$2
-OUTFILE=$3
+PORTFOLIO=$1
+MODE=$2
+TASK_QUEUE=$3
+OUTFILE=$4
 
 ## validate mode
 if [[ ! $MODE =~ ^(all|heuristics|samples)$ ]]; then
@@ -29,9 +32,6 @@ if [ ! -f $TASK_QUEUE ]; then
     exit
 fi
 
-## executable for portfolio
-PORTFOLIO=../ca-portfolio/bin/main
-
 ## function that pops a task from file
 ## i.e. reads the first line, erases is and returns it
 function pop {
@@ -43,6 +43,6 @@ function pop {
 ## loop to pop task containing list of instances from queue 
 while [ -s $TASK_QUEUE ]; do
     INSTANCES=`pop $TASK_QUEUE`
-    echo ./${PORTFOLIO} -m $MODE -o $OUTFILE $INSTANCES
-    #./${PORTFOLIO} -m $MODE -o $OUTFILE $INSTANCES
+    #echo ${PORTFOLIO} -m $MODE -o $OUTFILE $INSTANCES
+    ${PORTFOLIO} -m $MODE -o $OUTFILE $INSTANCES
 done
