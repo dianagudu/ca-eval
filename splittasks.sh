@@ -37,11 +37,27 @@ fi
 
 ## split instances in dataset into task queues
 ## submit jobs to run portfolio on each task queue
-
+##
 ls -d $DATASET/* > /tmp/tasks
 split -n l/$N_Q --numeric-suffixes=1 /tmp/tasks $Q_PREFIX.
 rm /tmp/tasks
 
+
+## in case the jobs crashed/were interrupted before the task queues were emptied,
+## comment the splitting code (the 3 lines above) and uncomment the code below, which:
+## erases last processed instance from the stats file (most likely incompletely processed),
+## and adds it back to the beginning of the task queue
+##
+#for task in `ls ${Q_PREFIX}.*`
+#do
+#    job="${task##*.}"
+#    statf=$OUT_PREFIX.${job}
+#    instance=`tail -n 1 $statf | awk -F, '{print $1}'`
+#    binstance=`echo $instance | awk -F/ '{print $8}'`
+#    echo $statf '====>' $instance '====>' $binstance
+#    sed -i "/$binstance/d" $statf
+#    echo $instance $'\n'"$(cat $task)" > $task
+#done
 
 for task in `ls ${Q_PREFIX}.*`
 do
