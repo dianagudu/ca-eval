@@ -50,22 +50,28 @@ rm /tmp/tasks
 ##
 #for task in `ls ${Q_PREFIX}.*`
 #do
-#    job="${task##*.}"
-#    statf=$OUT_PREFIX.${job}
-#    instance=`tail -n 1 $statf | awk -F, '{print $1}'`
-#    binstance=`echo $instance | awk -F/ '{print $8}'`
-#    echo $statf '====>' $instance '====>' $binstance
-#    sed -i "/$binstance/d" $statf
-#    echo $instance $'\n'"$(cat $task)" > $task
+#    ## first check if task queue is not empty
+#    if [ -s $task ]; then
+#        job="${task##*.}"
+#        statf=$OUT_PREFIX.${job}
+#        instance=`tail -n 1 $statf | awk -F, '{print $1}'`
+#        binstance=`echo $instance | awk -F/ '{print $8}'`
+#        echo $statf '====>' $instance '====>' $binstance
+#        sed -i "/$binstance/d" $statf
+#        echo $instance $'\n'"$(cat $task)" > $task
+#    fi
 #done
 
 for task in `ls ${Q_PREFIX}.*`
 do
-    job="${task##*.}"
-    echo msub -q singlenode job.sh $MODE $Q_PREFIX.${job} $OUT_PREFIX.${job}
-    msub -q singlenode job.sh $MODE $Q_PREFIX.${job} $OUT_PREFIX.${job}
+    ## first check if task queue is not empty
+    if [ -s $task ]; then
+        job="${task##*.}"
+        echo msub -q singlenode job.sh $MODE $Q_PREFIX.${job} $OUT_PREFIX.${job}
+        msub -q singlenode job.sh $MODE $Q_PREFIX.${job} $OUT_PREFIX.${job}
 
-   ## alternatively, run locally and sequentially
-   ## ./runportfolio.sh ../ca-portfolio/bin/main $MODE $Q_PREFIX.${job} $OUT_PREFIX.${job}
+        ## alternatively, run locally and sequentially
+        ## ./runportfolio.sh ../ca-portfolio/bin/main $MODE $Q_PREFIX.${job} $OUT_PREFIX.${job}
+    fi
 done
 
