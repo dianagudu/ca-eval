@@ -4,7 +4,7 @@
 ## $1: folder where dataset (auction instances) is stored (absolute path)
 ## $2: number of task queues to create
 ## $3: task queue file prefix (absolute path)
-## $4: mode to run portfolio in: heuristics, all (i.e. including CPLEX) and samples
+## $4: mode to run portfolio in: heuristics, all (i.e. including CPLEX), samples, and random
 ## #5: stats output file prefix (absolute path)
 
 if [[ $# -ne 5 ]]; then
@@ -12,7 +12,7 @@ if [[ $# -ne 5 ]]; then
     echo '  1. dataset folder containing auction instances (absolute path)'
     echo '  2. number of task queues to create'
     echo '  3. prefix name for task queue files (absolute path)'
-    echo '  4. run mode (heuristics/all/samples)'
+    echo '  4. run mode (heuristics/all/samples/random)'
     echo '  5. stats output file prefix (absolute path)'
     exit
 fi

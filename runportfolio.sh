@@ -2,14 +2,14 @@
 
 ## script arguments:
 ## $1: path to executable portfolio (absolute path)
-## $2: mode to run portfolio in: heuristics, all (i.e. including CPLEX) and samples
+## $2: mode to run portfolio in: heuristics, all (i.e. including CPLEX), samples, and random
 ## $3: task queue (task = auction instances to run portfolio on) (absolute path)
 ## $4: output file prefix (absolute path)
 
 if [[ $# -ne 4 ]]; then
     echo 'Please provide 4 arguments:'
     echo '  1. path to executable portfolio (absolute path)'
-    echo '  2. run mode (heuristics/all/samples)'
+    echo '  2. run mode (heuristics/all/samples/random)'
     echo '  3. task queue (task = list of auction instances) (absolute path)'
     echo '  4. output file (absolute path)'
     exit
@@ -21,8 +21,8 @@ TASK_QUEUE=$3
 OUTFILE=$4
 
 ## validate mode
-if [[ ! $MODE =~ ^(all|heuristics|samples)$ ]]; then
-    echo "Mode '$MODE' invalid. Valid modes: all, heuristics, samples."
+if [[ ! $MODE =~ ^(all|heuristics|samples|random)$ ]]; then
+    echo "Mode '$MODE' invalid. Valid modes: all, heuristics, samples, random."
     exit
 fi
 
