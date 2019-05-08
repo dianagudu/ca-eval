@@ -40,7 +40,7 @@ where $WORK is your work directory (examples were run on [bwUniCluster](https://
 
 ### remarks
 
-* The models used to generate the datasets are included in the repository [models](models/)
+* The [models](models/) used to generate the datasets are included in the repository
 * New models can be created from the datasources (processed cloud traces) --> see commented lines in [createdb.sh](createdb.sh)
 * Datasources were created by processing real cloud traces:
     * [Google Cluster data](https://github.com/google/cluster-data)

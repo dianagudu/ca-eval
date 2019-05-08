@@ -1,6 +1,6 @@
 env
 .vscode
 db
-models
+models_*
 dataset-*
 job_uc1_*
