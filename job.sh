@@ -24,7 +24,7 @@ OUTFILE=$3
 
 # prepare environment
 module load compiler/gnu/8.2
-export LD_LIBRARY_PATH=/home/kit/scc/rg7642/boost_1_69_0/stage/lib:/home/kit/scc/rg7642/yaml-cpp/build:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=${HOME}/boost_1_69_0/stage/lib:${HOME}/yaml-cpp/build:$LD_LIBRARY_PATH
 
 # paths to runportfolio script and 
 export BASE=${HOME}/ca-eval
