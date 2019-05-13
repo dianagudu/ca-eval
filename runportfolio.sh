@@ -19,6 +19,7 @@ PORTFOLIO=$1
 MODE=$2
 TASK_QUEUE=$3
 OUTFILE=$4
+LOCK=${TASK_QUEUE}.lock
 
 ## validate mode
 if [[ ! $MODE =~ ^(all|heuristics|samples|random)$ ]]; then
@@ -36,13 +37,26 @@ fi
 ## i.e. reads the first line, erases is and returns it
 function pop {
     QUEUE=$1
+    while [ -e $LOCK ]; do sleep 1; done
+    touch $LOCK
     echo `head -1 $QUEUE`
     sed -i 1d $QUEUE
+    rm $LOCK
 }
 
-## loop to pop task containing list of instances from queue 
+function cpop {
+    curl localhost:11833 2>/dev/null
+}
+
+
+## loop to pop task containing list of instances from queue
+echo "Starting to poll ..."
 while [ -s $TASK_QUEUE ]; do
-    INSTANCES=`pop $TASK_QUEUE`
-    #echo ${PORTFOLIO} -m $MODE -o $OUTFILE $INSTANCES
+    INSTANCES=`cpop`
+    echo "Current instances: $INSTANCES"
+    [ -z "$INSTANCES" ] && break   
+    echo "$INSTANCES" >> "${TASK_QUEUE}.delivered"
+    echo ${PORTFOLIO} -m $MODE -o $OUTFILE $INSTANCES
     ${PORTFOLIO} -m $MODE -o $OUTFILE $INSTANCES
+    echo "$INSTANCES" >> "${TASK_QUEUE}.done"
 done

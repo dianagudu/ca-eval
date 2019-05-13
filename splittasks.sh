@@ -42,6 +42,12 @@ ls -d $DATASET/* > /tmp/tasks
 split -n l/$N_Q --numeric-suffixes=1 /tmp/tasks $Q_PREFIX.
 rm /tmp/tasks
 
+# create task queues from list of instances in file tbd
+#split -n l/$N_Q --numeric-suffixes=1 tbd $Q_PREFIX.
+#exit
+## todo:
+## remove partially processed instances from stats
+## reprocess the instances in delivered but not in done      
 
 ## in case the jobs crashed/were interrupted before the task queues were emptied,
 ## comment the splitting code (the 3 lines above) and uncomment the code below, which:
@@ -54,7 +60,7 @@ rm /tmp/tasks
 #    if [ -s $task ]; then
 #        job="${task##*.}"
 #        statf=$OUT_PREFIX.${job}
-#        instance=`tail -n 1 $statf | awk -F, '{print $1}'`
+#        instance=`tail -n 1 $statf | awk -F, '{print $2}'`  # print $1 for malaise and ca-compare
 #        binstance=`echo $instance | awk -F/ '{print $8}'`
 #        echo $statf '====>' $instance '====>' $binstance
 #        sed -i "/$binstance/d" $statf
@@ -62,7 +68,7 @@ rm /tmp/tasks
 #    fi
 #done
 
-for task in `ls ${Q_PREFIX}.*`
+for task in `ls ${Q_PREFIX}.??`
 do
     ## first check if task queue is not empty
     if [ -s $task ]; then

@@ -21,6 +21,7 @@ if [ ! -d $BASE ]; then
     mkdir $BASE
 fi
 ## directory where models are located
+# CHANGE THIS TO FIT YOUR SETUP
 MODELS_DIR=models
 
 ## number of instances to generate for each set of params 
