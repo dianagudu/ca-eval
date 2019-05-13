@@ -1,5 +1,5 @@
 #!/bin/bash
-#MSUB -l nodes=1:ppn=1
+#MSUB -l nodes=1:ppn=16
 #MSUB -l walltime=3:00:00:00
 #MSUB -l mem=32000mb
 #MSUB -v EXECUTABLE=$HOME/ca-portfolio/bin/main
@@ -26,10 +26,24 @@ OUTFILE=$3
 module load compiler/gnu/8.2
 export LD_LIBRARY_PATH=/home/kit/scc/rg7642/boost_1_69_0/stage/lib:/home/kit/scc/rg7642/yaml-cpp/build:$LD_LIBRARY_PATH
 
+source ${HOME}/anaconda3/bin/activate ""
+
 # paths to runportfolio script and 
 export BASE=${HOME}/ca-eval
 export PORTFOLIO=${HOME}/ca-portfolio/bin/main
 
+echo "Starting python ..."
+python ${BASE}/task_queue_processor.py "${TASK_QUEUE}" &
+sleep 10
+echo "Python running."
+
 
 # run experiment
-${BASE}/runportfolio.sh $PORTFOLIO $MODE $TASK_QUEUE $OUTFILE
+for nrun in `seq 1 16`; do
+    ${BASE}/runportfolio.sh $PORTFOLIO $MODE $TASK_QUEUE ${OUTFILE}.${nrun} &
+    pids[${nrun}]=$!
+done
+
+for pid in ${pids[*]}; do
+    wait $pid
+done
