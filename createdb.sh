@@ -8,7 +8,11 @@ BASE=`pwd`
 ### command to create datasource
 ingencli=../inputgen/ingencli.py
 
+mkdir -p ${BASE}/db
+mkdir -p ${BASE}/models
+
 ### preprocess cloud traces and create datasources
+## assume cloud traces are located at ${BASE}/cloud_traces in directories `bitbrains` and `google`
 # python ${ingencli} create datasource bitbrains ${BASE}/db/bitbrains_fastStorage ${BASE}/cloud_traces/bitbrains/fastStorage/2013-8/
 #
 # python ${ingencli} create datasource uniform ${BASE}/db/uniform3 3
